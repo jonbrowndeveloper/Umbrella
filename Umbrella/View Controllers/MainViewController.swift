@@ -42,18 +42,26 @@ class MainViewController: UIViewController {
 extension MainViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        fatalError()
+        // fatalError()
+        return 1
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        fatalError()
+        // fatalError()
+        return 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        fatalError()
+        // fatalError()
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath as IndexPath)
+        // TODO: Add alias for custom UICollectionViewCell
+        //   as! UICollectionViewCell
+        
+        return cell
     }
-    
+    /*
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         fatalError()
     }
+     */
 }

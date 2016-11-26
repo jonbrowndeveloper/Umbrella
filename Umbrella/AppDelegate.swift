@@ -7,16 +7,17 @@
 //
 
 import UIKit
+import Foundation
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        fatalError("Look at me first")
+        // fatalError("Look at me first")
         // All the layout metrics are contained in the file called metrics.md located as a sibling of the AppDelegate.swift.
         // Reference screen shots are contained in the reference images folder located as a descendant of the Umbrella group
         
@@ -29,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let coolColor = UIColor(0x03A9F4)
         
         // Setup the request
-        var weatherRequest = WeatherRequest(APIKey: "YOUR API KEY")
+        var weatherRequest = WeatherRequest(APIKey: "324f2ac862fc9fea")
         
         // Set the zip code
         weatherRequest.zipCode = "90210"
@@ -56,7 +57,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return true
     }
-
+    
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
