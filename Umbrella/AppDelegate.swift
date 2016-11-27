@@ -32,11 +32,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Setup the request
         var weatherRequest = WeatherRequest(APIKey: "324f2ac862fc9fea")
         
-        // Set the zip code
-        weatherRequest.zipCode = "90210"
+
         
         // Here's your URL. Marshall this to the internet however you please.
         let url = weatherRequest.URL
+        
+        // Set the default zip code
+        var defaultZipCode = "90210"
+        
+        // get the url based off of current zip code
+        let weatherDataURL = HelperMethods.weatherURL(zipCode: defaultZipCode)
+        
+        // get weather data from api
+        let weatherData = HelperMethods.getWeatherData(url: weatherDataURL, completionHandler: <#T##(Data) -> Void#>)
+        
+        // let data = HelperMethods.getWeatherData(url)
         
         // Here’s where to look for the information, because let’s be honest, you know how to read JSON
         // All values are as of October 13, 2015

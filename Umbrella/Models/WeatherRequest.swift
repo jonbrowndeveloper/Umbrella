@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 /**
 *  Struct that builds the URL to send to the server for parsing. Call the getter to URL for the fully qualified URL
@@ -18,7 +19,8 @@ struct WeatherRequest {
     /// The zip code to send to the server.
     var zipCode: String?
     
-    var URL: Foundation.URL? {
+    var URL: Foundation.URL?
+        {
         get {
             /// If there is no zip code, there is no url
             guard let zip = zipCode else {
@@ -46,3 +48,6 @@ struct WeatherRequest {
         self.APIKey = APIKey
     }
 }
+
+
+

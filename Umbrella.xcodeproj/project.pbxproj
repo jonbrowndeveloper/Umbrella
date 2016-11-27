@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		29F513641DEA0EBF00F40F66 /* HelperMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F513631DEA0EBF00F40F66 /* HelperMethods.swift */; };
 		44DE82B41BCDF45900A319D2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44DE82B31BCDF45900A319D2 /* AppDelegate.swift */; };
 		44DE82B91BCDF45900A319D2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44DE82B71BCDF45900A319D2 /* Main.storyboard */; };
 		44DE82BB1BCDF45900A319D2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 44DE82BA1BCDF45900A319D2 /* Assets.xcassets */; };
@@ -30,6 +31,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		29F513631DEA0EBF00F40F66 /* HelperMethods.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelperMethods.swift; sourceTree = "<group>"; };
 		44AEF0281BDA729E0056621F /* landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = landscape.png; sourceTree = "<group>"; };
 		44AEF0291BDA729E0056621F /* portrait-warm.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "portrait-warm.png"; sourceTree = "<group>"; };
 		44AEF02A1BDA729E0056621F /* portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = portrait.png; sourceTree = "<group>"; };
@@ -137,6 +139,7 @@
 			isa = PBXGroup;
 			children = (
 				44DE82DE1BCDF8EE00A319D2 /* WeatherRequest.swift */,
+				29F513631DEA0EBF00F40F66 /* HelperMethods.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -255,6 +258,7 @@
 				44DE82DF1BCDF8EE00A319D2 /* WeatherRequest.swift in Sources */,
 				44DE82E11BCDFBBB00A319D2 /* String+Umbrella.swift in Sources */,
 				44DE82DD1BCDF7C800A319D2 /* UIColor+Nerdery.swift in Sources */,
+				29F513641DEA0EBF00F40F66 /* HelperMethods.swift in Sources */,
 				44DE82D91BCDF4C500A319D2 /* MainViewController.swift in Sources */,
 				44DE82B41BCDF45900A319D2 /* AppDelegate.swift in Sources */,
 				44DE82D71BCDF4BA00A319D2 /* SettingsViewController.swift in Sources */,
