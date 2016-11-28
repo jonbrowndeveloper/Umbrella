@@ -11,6 +11,7 @@ import Foundation
 
 class HelperMethods: NSObject
 {
+    /*
     static func getWeatherData(url: URL, completionHandler handler: @escaping (_ data: Data) -> Void)
     {
         // highest priority asynch queue using weather url to get weather data
@@ -22,11 +23,13 @@ class HelperMethods: NSObject
             }
         }
     }
-    
+    */
     static func weatherURL(zipCode: String) ->  URL
     {
+        // use a more global variable if the API key needs to be changed frequently
         let APIKey = "324f2ac862fc9fea"
         
+        // combine URL
         var url: URL?
             {
             get {

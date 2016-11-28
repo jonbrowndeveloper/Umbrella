@@ -28,9 +28,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // UIColors for the use for reference in the rest of the application
         let warmColor = UIColor(0xFF9800)
         let coolColor = UIColor(0x03A9F4)
-        
+        /*
         // Setup the request
-        var weatherRequest = WeatherRequest(APIKey: "324f2ac862fc9fea")
+        // var weatherRequest = WeatherRequest(APIKey: "324f2ac862fc9fea")
         
 
         
@@ -44,8 +44,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let weatherDataURL = HelperMethods.weatherURL(zipCode: defaultZipCode)
         
         // get weather data from api
-        let weatherData = HelperMethods.getWeatherData(url: weatherDataURL, completionHandler: <#T##(Data) -> Void#>)
-        
+        // let weatherData = HelperMethods.getWeatherData(url: weatherDataURL, completionHandler: <#T##(Data) -> Void#>)
+        */
         // let data = HelperMethods.getWeatherData(url)
         
         // Here’s where to look for the information, because let’s be honest, you know how to read JSON

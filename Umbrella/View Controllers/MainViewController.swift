@@ -11,11 +11,27 @@ import UIKit
 class MainViewController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
-
-    override func viewDidLoad() {
+    
+    @IBOutlet weak var currentConditionsView: UIView!
+    
+    // current condition outlets
+    
+    @IBOutlet weak var cityState: UILabel!
+    @IBOutlet weak var currentTemp: UILabel!
+    @IBOutlet weak var currentCondition: UILabel!
+    @IBOutlet weak var settingsButton: UIButton!
+    
+    override func viewDidLoad()
+    {
         super.viewDidLoad()
+        
+        // var weatherData = Data()
 
-        // Do any additional setup after loading the view.
+        getWeatherData2
+        {
+            weatherData in
+            print(weatherData)
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -36,6 +52,49 @@ class MainViewController: UIViewController {
         
         // Set the popover presentation style delegate to always force a popover
     }
+}
+
+func getWeatherData(url: URL, completionHandler handler: @escaping (_ data: Data) -> ())
+{
+    // highest priority asynch queue using weather url to get weather data
+    DispatchQueue.global(qos: .userInteractive).async
+        { () -> Void in
+            if let weatherData = try? Data(contentsOf: url)
+            {
+                handler(weatherData)
+            }
+    }
+}
+
+func getWeatherData2(completionHandler: @escaping (_ weatherData: Any?) -> ())
+{
+    let url = HelperMethods.weatherURL(zipCode: "90210")
+    
+    let session = URLSession.shared
+    
+    let task = session.dataTask(with: url)
+    {
+        data, response, error in
+        
+        let httpResponse = response as! HTTPURLResponse
+        let statusCode = httpResponse.statusCode
+        
+        print("status code \(statusCode)")
+        
+            if (statusCode == 200)
+            {
+                let json = try? JSONSerialization.jsonObject(with: data!, options:.allowFragments)
+                    
+                completionHandler(json)
+                    
+            }
+            else
+            {
+                // handle error and display to user
+            }
+        }
+    
+        task.resume()
 }
 
 // MARK: - UICollectionViewDataSource

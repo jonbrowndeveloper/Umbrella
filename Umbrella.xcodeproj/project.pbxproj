@@ -16,7 +16,6 @@
 		44DE82D71BCDF4BA00A319D2 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44DE82D61BCDF4BA00A319D2 /* SettingsViewController.swift */; };
 		44DE82D91BCDF4C500A319D2 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44DE82D81BCDF4C500A319D2 /* MainViewController.swift */; };
 		44DE82DD1BCDF7C800A319D2 /* UIColor+Nerdery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44DE82DC1BCDF7C800A319D2 /* UIColor+Nerdery.swift */; };
-		44DE82DF1BCDF8EE00A319D2 /* WeatherRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44DE82DE1BCDF8EE00A319D2 /* WeatherRequest.swift */; };
 		44DE82E11BCDFBBB00A319D2 /* String+Umbrella.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44DE82E01BCDFBBB00A319D2 /* String+Umbrella.swift */; };
 /* End PBXBuildFile section */
 
@@ -49,7 +48,6 @@
 		44DE82D81BCDF4C500A319D2 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		44DE82DA1BCDF4FE00A319D2 /* metrics.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = metrics.md; sourceTree = "<group>"; };
 		44DE82DC1BCDF7C800A319D2 /* UIColor+Nerdery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Nerdery.swift"; sourceTree = "<group>"; };
-		44DE82DE1BCDF8EE00A319D2 /* WeatherRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherRequest.swift; sourceTree = "<group>"; };
 		44DE82E01BCDFBBB00A319D2 /* String+Umbrella.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Umbrella.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -138,7 +136,6 @@
 		44DE82D41BCDF49900A319D2 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				44DE82DE1BCDF8EE00A319D2 /* WeatherRequest.swift */,
 				29F513631DEA0EBF00F40F66 /* HelperMethods.swift */,
 			);
 			path = Models;
@@ -255,7 +252,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				44DE82DF1BCDF8EE00A319D2 /* WeatherRequest.swift in Sources */,
 				44DE82E11BCDFBBB00A319D2 /* String+Umbrella.swift in Sources */,
 				44DE82DD1BCDF7C800A319D2 /* UIColor+Nerdery.swift in Sources */,
 				29F513641DEA0EBF00F40F66 /* HelperMethods.swift in Sources */,
