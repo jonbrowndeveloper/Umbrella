@@ -25,13 +25,41 @@ class MainViewController: UIViewController {
     {
         super.viewDidLoad()
         
-        // var weatherData = Data()
-
-        getWeatherData2
+        // setup weather data for current conditions view
+        
+        getWeatherData
         {
             weatherData in
-            print(weatherData)
+            
+            if let dictionary = weatherData as? [String: Any]
+            {
+                print(dictionary)
+                
+                if let currentConditions = dictionary["current_observation"] as? [String:Any]
+                {
+                    // get current temperature and display it
+                    
+                    let currentTempIntF = currentConditions["temp_f"] as? Int
+                    
+                    print("Current Temp \(currentTempIntF!)°")
+                    
+                    self.currentTemp.text = String(format: "%d°", currentTempIntF!)
+                    
+                    // get current city and display it
+                    
+                    if let displayLocation = currentConditions["display_location"] as? [String:Any]
+                    {                        
+                        self.cityState.text = displayLocation["full"] as? String
+                    }
+                    
+                    // get current weather data and display it
+                    
+                    self.currentCondition.text = currentConditions["weather"] as? String
+                }
+            }
         }
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -54,23 +82,13 @@ class MainViewController: UIViewController {
     }
 }
 
-func getWeatherData(url: URL, completionHandler handler: @escaping (_ data: Data) -> ())
+func getWeatherData(completionHandler: @escaping (_ weatherData: Any?) -> ())
 {
-    // highest priority asynch queue using weather url to get weather data
-    DispatchQueue.global(qos: .userInteractive).async
-        { () -> Void in
-            if let weatherData = try? Data(contentsOf: url)
-            {
-                handler(weatherData)
-            }
-    }
-}
-
-func getWeatherData2(completionHandler: @escaping (_ weatherData: Any?) -> ())
-{
-    let url = HelperMethods.weatherURL(zipCode: "90210")
+    let url = HelperMethods.weatherURL(zipCode: "55317")
     
     let session = URLSession.shared
+    
+    print("A Print Statement")
     
     let task = session.dataTask(with: url)
     {
@@ -83,10 +101,16 @@ func getWeatherData2(completionHandler: @escaping (_ weatherData: Any?) -> ())
         
             if (statusCode == 200)
             {
-                let json = try? JSONSerialization.jsonObject(with: data!, options:.allowFragments)
-                    
-                completionHandler(json)
-                    
+                let weatherData: Data = data!
+                
+                let json = try? JSONSerialization.jsonObject(with: weatherData, options: [])
+                
+                // dispatch completion handler on main queue for UI update
+                DispatchQueue.main.async(execute: { () -> Void in
+                    completionHandler(json)
+
+                })
+                
             }
             else
             {
