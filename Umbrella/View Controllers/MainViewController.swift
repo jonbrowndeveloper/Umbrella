@@ -20,16 +20,31 @@ class MainViewController: UIViewController {
     @IBOutlet weak var currentTemp: UILabel!
     @IBOutlet weak var currentCondition: UILabel!
     @IBOutlet weak var settingsButton: UIButton!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     override func viewDidLoad()
     {
         super.viewDidLoad()
+        
+        // set current conditions view to default color
+        
+        self.currentConditionsView.backgroundColor = UIColor(0xFF9800)
+        
+        // set image of settings button
+        
+        // self.settingsButton.imageView?.image = UIImage(named: "settingsCog")
+        
+        // start activity view
+        
+        self.activityIndicator.startAnimating()
         
         // setup weather data for current conditions view
         
         getWeatherData
         {
             weatherData in
+            
+            self.activityIndicator.stopAnimating()
             
             if let dictionary = weatherData as? [String: Any]
             {
@@ -55,9 +70,24 @@ class MainViewController: UIViewController {
                     // get current weather data and display it
                     
                     self.currentCondition.text = currentConditions["weather"] as? String
+                    
+                    // set background color of currentconditionsview to reflect temp
+                    
+                    if (currentTempIntF! < 60)
+                    {
+                        self.currentConditionsView.backgroundColor = UIColor(0x03A9F4)
+                    }
+                    else
+                    {
+                        self.currentConditionsView.backgroundColor = UIColor(0xFF9800)
+                    }
                 }
             }
         }
+        
+        // set color based off of temperature
+        
+        
         
         
     }
@@ -88,8 +118,6 @@ func getWeatherData(completionHandler: @escaping (_ weatherData: Any?) -> ())
     
     let session = URLSession.shared
     
-    print("A Print Statement")
-    
     let task = session.dataTask(with: url)
     {
         data, response, error in
@@ -98,7 +126,6 @@ func getWeatherData(completionHandler: @escaping (_ weatherData: Any?) -> ())
         let statusCode = httpResponse.statusCode
         
         print("status code \(statusCode)")
-        
             if (statusCode == 200)
             {
                 let weatherData: Data = data!

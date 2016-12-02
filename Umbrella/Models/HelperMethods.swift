@@ -11,19 +11,6 @@ import Foundation
 
 class HelperMethods: NSObject
 {
-    /*
-    static func getWeatherData(url: URL, completionHandler handler: @escaping (_ data: Data) -> Void)
-    {
-        // highest priority asynch queue using weather url to get weather data
-        DispatchQueue.global(qos: .userInteractive).async
-        { () -> Void in
-            if let weatherData = try? Data(contentsOf: url)
-            {
-                handler(weatherData)
-            }
-        }
-    }
-    */
     static func weatherURL(zipCode: String) ->  URL
     {
         // use a more global variable if the API key needs to be changed frequently
