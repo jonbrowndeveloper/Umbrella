@@ -29,19 +29,53 @@
                                     <constraint firstAttribute="width" secondItem="hwj-bF-FWv" secondAttribute="height" multiplier="375:479" id="PBU-DW-lhL"/>
                                 </constraints>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="npG-sO-eSE">
-                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="itemSize" width="62" height="62"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Cell" id="lZX-Dn-pmD">
-                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="hourlyCell" id="lZX-Dn-pmD" customClass="HourlyCollectionViewCell" customModule="Umbrella" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="62" height="62"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="62" height="62"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="UuA-z5-nIG">
+                                                    <rect key="frame" x="17" y="17" width="28" height="28"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="28" id="Mu5-XK-MFW"/>
+                                                        <constraint firstAttribute="height" constant="28" id="uid-lj-ACe"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8HO-0v-j56">
+                                                    <rect key="frame" x="8" y="0.0" width="46" height="15"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="12"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="temp" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="40y-5G-T4j">
+                                                    <rect key="frame" x="11" y="47" width="40" height="21"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="12"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
                                         </view>
+                                        <constraints>
+                                            <constraint firstItem="UuA-z5-nIG" firstAttribute="centerY" secondItem="lZX-Dn-pmD" secondAttribute="centerY" id="7t8-7R-NeI"/>
+                                            <constraint firstItem="40y-5G-T4j" firstAttribute="centerX" secondItem="lZX-Dn-pmD" secondAttribute="centerX" id="NDQ-EG-hw5"/>
+                                            <constraint firstItem="40y-5G-T4j" firstAttribute="top" secondItem="UuA-z5-nIG" secondAttribute="bottom" constant="2" id="RNt-RS-eaq"/>
+                                            <constraint firstItem="8HO-0v-j56" firstAttribute="centerX" secondItem="lZX-Dn-pmD" secondAttribute="centerX" id="dGO-3X-uup"/>
+                                            <constraint firstItem="UuA-z5-nIG" firstAttribute="top" secondItem="8HO-0v-j56" secondAttribute="bottom" constant="2" id="ehu-wd-Rfv"/>
+                                            <constraint firstItem="UuA-z5-nIG" firstAttribute="centerX" secondItem="lZX-Dn-pmD" secondAttribute="centerX" id="fFu-BN-n85"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="imageView" destination="UuA-z5-nIG" id="Og2-Pj-3LK"/>
+                                            <outlet property="tempLabel" destination="40y-5G-T4j" id="QyZ-cf-eux"/>
+                                            <outlet property="timeLabel" destination="8HO-0v-j56" id="XcD-zm-OZ5"/>
+                                        </connections>
                                     </collectionViewCell>
                                 </cells>
                                 <connections>
@@ -108,6 +142,7 @@
                                     <constraint firstAttribute="width" secondItem="Pej-dx-WLJ" secondAttribute="height" multiplier="25:12" id="Rg4-L2-HxK"/>
                                     <constraint firstItem="5Lt-3K-VdP" firstAttribute="leading" secondItem="Pej-dx-WLJ" secondAttribute="leading" id="Wpn-wy-pzQ"/>
                                     <constraint firstAttribute="trailing" secondItem="5Lt-3K-VdP" secondAttribute="trailing" id="gCf-nI-sT9"/>
+                                    <constraint firstAttribute="width" priority="1" constant="240" id="vAi-OT-Kss"/>
                                     <constraint firstItem="aAa-nr-gUD" firstAttribute="centerX" secondItem="Pej-dx-WLJ" secondAttribute="centerX" id="xwK-Mr-Fgv"/>
                                 </constraints>
                             </stackView>
@@ -117,10 +152,13 @@
                             <constraint firstItem="Pej-dx-WLJ" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="9ZS-Nv-vRx"/>
                             <constraint firstItem="hwj-bF-FWv" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="B3V-fV-Bjl"/>
                             <constraint firstItem="Pej-dx-WLJ" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="CIi-Lr-7Rj"/>
+                            <constraint firstItem="hwj-bF-FWv" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" priority="1" constant="167.5" id="LWc-Eh-xH8"/>
                             <constraint firstAttribute="trailing" secondItem="hwj-bF-FWv" secondAttribute="trailing" id="MwH-dT-X4p"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="hwj-bF-FWv" secondAttribute="bottom" id="PN2-b1-ivW"/>
+                            <constraint firstItem="hwj-bF-FWv" firstAttribute="leading" secondItem="5Lt-3K-VdP" secondAttribute="leading" priority="1" id="XAw-Ve-mFI"/>
                             <constraint firstAttribute="trailing" secondItem="Pej-dx-WLJ" secondAttribute="trailing" id="qCV-7b-GGJ"/>
                             <constraint firstItem="hwj-bF-FWv" firstAttribute="top" secondItem="Pej-dx-WLJ" secondAttribute="bottom" constant="8" id="r01-qt-yIE"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Pej-dx-WLJ" secondAttribute="bottom" constant="487.5" id="r3T-A3-lfw"/>
                         </constraints>
                     </view>
                     <connections>
@@ -130,6 +168,16 @@
                         <outlet property="currentCondition" destination="aAa-nr-gUD" id="kNm-8o-THe"/>
                         <outlet property="currentConditionsView" destination="5Lt-3K-VdP" id="VYZ-cY-wAQ"/>
                         <outlet property="currentTemp" destination="RgX-EH-Ga6" id="xHw-JZ-k15"/>
+                        <outlet property="landscapeConstraintBLOV" destination="r3T-A3-lfw" id="en5-v2-qkL"/>
+                        <outlet property="landscapeConstraintLSCV" destination="XAw-Ve-mFI" id="5Mg-7G-1HI"/>
+                        <outlet property="landscapeConstraintTPCV" destination="LWc-Eh-xH8" id="ZXs-DG-jub"/>
+                        <outlet property="landscapeConstraintWTOV" destination="vAi-OT-Kss" id="owh-rd-oNq"/>
+                        <outlet property="portraitConstraintARCV" destination="Rg4-L2-HxK" id="cdM-KD-UJf"/>
+                        <outlet property="portraitConstraintAROV" destination="PBU-DW-lhL" id="2hy-fQ-rs7"/>
+                        <outlet property="portraitConstraintBAOV" destination="OgN-Qi-alY" id="WRq-Q2-UZr"/>
+                        <outlet property="portraitConstraintLSCV" destination="B3V-fV-Bjl" id="yzP-Ns-voe"/>
+                        <outlet property="portraitConstraintTPCV" destination="r01-qt-yIE" id="z0H-H7-jSf"/>
+                        <outlet property="portraitConstraintTSOV" destination="gCf-nI-sT9" id="qQQ-VS-IqK"/>
                         <outlet property="settingsButton" destination="l8h-XW-e3E" id="bOo-cc-On2"/>
                     </connections>
                 </viewController>

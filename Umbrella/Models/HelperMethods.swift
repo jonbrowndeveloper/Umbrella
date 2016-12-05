@@ -11,7 +11,7 @@ import Foundation
 
 class HelperMethods: NSObject
 {
-    static func weatherURL(zipCode: String) ->  URL
+    static func weatherURL(callType: String,zipCode: String) ->  URL
     {
         // use a more global variable if the API key needs to be changed frequently
         let APIKey = "324f2ac862fc9fea"
@@ -24,7 +24,7 @@ class HelperMethods: NSObject
                 var urlComponents = URLComponents()
                 urlComponents.scheme = "https"
                 urlComponents.host = "api.wunderground.com"
-                urlComponents.path = "/api/\(APIKey)/conditions/hourly/q/\(zipCode).json"
+                urlComponents.path = "/api/\(APIKey)/\(callType)/q/\(zipCode).json"
                 
                 return urlComponents.url
             }
