@@ -26,31 +26,11 @@ class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, UIT
         // search icon for text field
         
         textField.leftViewMode = UITextFieldViewMode.always
-        var imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 20))
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 20))
         imageView.contentMode = UIViewContentMode.right
         imageView.image = #imageLiteral(resourceName: "searchGlass")
         
         textField.leftView = imageView
-        
-        // add blur affect to main view
-        
-        let blurEffect = UIBlurEffect(style: .dark)
-        let blurredEffectView = UIVisualEffectView(effect: blurEffect)
-        blurredEffectView.frame = self.view.bounds
-        view.addSubview(blurredEffectView)
-        self.view.sendSubview(toBack: blurredEffectView)
-        
-        // TODO: Add vibrancy control to segmented control and get weather button
-        
-        // add vibrancy effect to button and segmentedcontrol
-        /*
-        let vibrancyEffect = UIVibrancyEffect(blurEffect: blurEffect)
-        let vibrancyEffectView = UIVisualEffectView(effect: vibrancyEffect)
-        vibrancyEffectView.frame = segmentedControl.bounds
-        
-        vibrancyEffectView.contentView.addSubview(segmentedControl)
-        blurredEffectView.contentView.addSubview(vibrancyEffectView)
-         */
         
         // set selected index to current value
         
@@ -78,7 +58,7 @@ class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, UIT
     
     @IBAction func getWeatherButtonPushed(_ sender: Any)
     {
-        // could also use a gesture recognizer, this way is simply cleaner
+        // could also use a gesture recognizer, this way I believe is a bit cleaner
         
         self.handleTap()
     }
@@ -110,11 +90,8 @@ class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, UIT
 
     }
     
-    func checkZipCode()
-    {
-
-    }
-
+    // change user defaults for farhenheit vs celsius 
+    
     @IBAction func tempTypeSwitch(_ sender: Any)
     {
         if (segmentedControl.selectedSegmentIndex == 0)

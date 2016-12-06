@@ -49,11 +49,6 @@ class MainViewController: UIViewController, UIAlertViewDelegate {
         self.initializeView()
     }
     
-    override func viewWillAppear(_ animated: Bool)
-    {
-
-    }
-    
     func initializeView()
     {
         // set current conditions view to default color
@@ -70,6 +65,8 @@ class MainViewController: UIViewController, UIAlertViewDelegate {
         getWeatherData(callType: "conditions")
         {
             weatherData in
+            
+            // determine if data sent back from weather api is an error or actual data
             
             if let dictionary = weatherData as? [String: Any]
             {
@@ -155,7 +152,7 @@ class MainViewController: UIViewController, UIAlertViewDelegate {
         {
             weatherData in
             
-            // check if there was an error with the zip code
+            // determine if data sent back from weather api is an error or actual data
             
             if let dictionary = weatherData as? [String: Any]
             {
@@ -210,7 +207,7 @@ class MainViewController: UIViewController, UIAlertViewDelegate {
     func getIcons()
     {
         // get weather icons
-        // for the sake of the project, it looks like the specifications are calling for the download of these icons every time the application runs. If these Icons never change, I would prefer to simply save these icons in the assets for the application rather than have all of these network calls.
+        // for the sake of the project, it looks like the specifications are calling for the download of these icons every time the application runs. If these Icons never change, it would be prefereble to simply save these icons in the assets for the application rather than have so many network calls.
         
         // get both solid and outlined weather icons for collection view
         
@@ -239,6 +236,8 @@ class MainViewController: UIViewController, UIAlertViewDelegate {
             getIconData(iconURL: self.uniqueIcons[icon].nrd_weatherIconURL()!)
             {
                 iconData in
+                
+                // add icon to icon dict
                 
                 self.iconImageDict[self.uniqueIcons[icon]] = UIImage(data: iconData as! Data)
                 
@@ -360,6 +359,8 @@ class MainViewController: UIViewController, UIAlertViewDelegate {
             task.resume()
     }
     
+    // this function is slightly different getWeatherData function as it does not parse any JSON. If these two functions are not used often separately, it may be wise to simply put them into one function.
+    
     func getIconData(iconURL: URL, completionHandler: @escaping (_ iconData: Any?) -> ())
     {
         let session = URLSession.shared
@@ -411,7 +412,7 @@ class MainViewController: UIViewController, UIAlertViewDelegate {
 
     @IBAction func returnedToMainViewController(segue:UIStoryboardSegue)
     {
-        // action called when modal view controller is dismissed
+        // action called when modal view controller is dismissed, essentially in place of the viewWillAppear
         
         self.simpleCompletionCounter = 0
         
@@ -477,7 +478,7 @@ extension MainViewController: UICollectionViewDataSource
     {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "hourlyCell", for: indexPath as IndexPath)        as! HourlyCollectionViewCell
         
-        // get current cell number and access correct values in hourly forecast array
+        // get current cell number to access correct values in hourly forecast array
         
         var cellNumber = Int()
         
@@ -532,8 +533,18 @@ extension MainViewController: UICollectionViewDataSource
         // for getting high and low of the day
         
         let firstHourOfCurrentDay = (cellNumber - indexPath.row)
+
+        var lastHourOfCurrentDay = Int()
         
-        let lastHourOfCurrentDay = firstHourOfCurrentDay + hoursLeftOnDayOne
+        if (indexPath.section == 0)
+        {
+            lastHourOfCurrentDay = hoursLeftOnDayOne
+
+        }
+        else
+        {
+            lastHourOfCurrentDay = firstHourOfCurrentDay + 24
+        }
         
         // array for storing and comparing temps of the current day
         
@@ -595,21 +606,41 @@ extension MainViewController: UICollectionViewDataSource
         {
             cell.imageView.image = outlineIcon?.withRenderingMode(.alwaysTemplate)
             cell.imageView.tintColor = UIColor.black
+            
+            // set labels as well
+            cell.tempLabel.textColor = UIColor.black
+            cell.timeLabel.textColor = UIColor.black
+            
         }
         else if (cellNumber == firstHigh)
         {
             cell.imageView.image = solidIcon?.withRenderingMode(.alwaysTemplate)
             cell.imageView.tintColor = UIColor(0xFF9800)
+            
+            // set labels as well
+            cell.tempLabel.textColor = UIColor(0xFF9800)
+            cell.timeLabel.textColor = UIColor(0xFF9800)
+
         }
         else if (cellNumber == firstLow)
         {
             cell.imageView.image = solidIcon?.withRenderingMode(.alwaysTemplate)
             cell.imageView.tintColor = UIColor(0x03A9F4)
+            
+            // set labels as well
+            cell.tempLabel.textColor = UIColor(0x03A9F4)
+            cell.timeLabel.textColor = UIColor(0x03A9F4)
+
         }
         else
         {
             cell.imageView.image = outlineIcon?.withRenderingMode(.alwaysTemplate)
             cell.imageView.tintColor = UIColor.black
+            
+            // set labels as well
+            cell.tempLabel.textColor = UIColor.black
+            cell.timeLabel.textColor = UIColor.black
+
         }
         
         return cell
@@ -645,9 +676,7 @@ extension MainViewController: UICollectionViewDataSource
                 }
                 else
                 {
-                    headerView.dayLabel.text = "Today"
-                    
-                    // going into hourly forcast to grab
+                    // going into hourly forcast to grab the weekday names of the following days 
                     
                     if let currentHourDict = self.hourlyForecastArray[(self.hoursLeftOnDayOne + ((indexPath.section - 1) * 24))] as? [String:Any]
                     {
