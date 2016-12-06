@@ -1,4 +1,4 @@
-//
+ //
 //  MainViewController.swift
 //  Umbrella
 //
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MainViewController: UIViewController {
+class MainViewController: UIViewController, UIAlertViewDelegate {
     
     @IBOutlet weak var collectionView: UICollectionView!
     
@@ -21,21 +21,7 @@ class MainViewController: UIViewController {
     @IBOutlet weak var currentCondition: UILabel!
     @IBOutlet weak var settingsButton: UIButton!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    
-    // dynamic auto layout constraint outlets for lanscape and portrait
-    
-    @IBOutlet weak var portraitConstraintARCV: NSLayoutConstraint!
-    @IBOutlet weak var portraitConstraintAROV: NSLayoutConstraint!
-    @IBOutlet weak var portraitConstraintBAOV: NSLayoutConstraint!
-    @IBOutlet weak var portraitConstraintTSOV: NSLayoutConstraint!
-    @IBOutlet weak var portraitConstraintLSCV: NSLayoutConstraint!
-    @IBOutlet weak var portraitConstraintTPCV: NSLayoutConstraint!
-    
-    @IBOutlet weak var landscapeConstraintWTOV: NSLayoutConstraint!
-    @IBOutlet weak var landscapeConstraintBLOV: NSLayoutConstraint!
-    @IBOutlet weak var landscapeConstraintLSCV: NSLayoutConstraint!
-    @IBOutlet weak var landscapeConstraintTPCV: NSLayoutConstraint!
-    
+        
     // array for hourly forcast
     
     var hourlyForecastArray = [Any]()
@@ -44,25 +30,35 @@ class MainViewController: UIViewController {
     
     var hoursLeftOnDayOne = Int()
     
+    // simple completion counter to know when all code completes
+    
+    var simpleCompletionCounter = 0
+    
+    // icon dict filled with icons needed for hourly forecast
+    
+    var iconImageDict = [String:UIImage]()
+    
+    // create var for unique icon names
+    
+    var uniqueIcons = [String]()
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
         
-        //TODO: remove
-        
-        // self.applyLandScapeConstraint()
+        self.initializeView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool)
+    {
 
-        // add self as observer to device orientation changes
-        
-        // NotificationCenter.default.addObserver(self, selector: #selector(rotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
-        
+    }
+    
+    func initializeView()
+    {
         // set current conditions view to default color
         
         self.currentConditionsView.backgroundColor = UIColor(0xFF9800)
-        
-        // set image of settings button
-        
-        // self.settingsButton.imageView?.image = UIImage(named: "settingsCog")
         
         // start activity view
         
@@ -71,46 +67,85 @@ class MainViewController: UIViewController {
         // setup weather data for current conditions view
         // it would be wise to put this into a func if it should be called more than once after the main view is displayed
         
-        getWeatherData(callType: "conditions/hourly")
+        getWeatherData(callType: "conditions")
         {
             weatherData in
             
-            self.activityIndicator.stopAnimating()
-            
             if let dictionary = weatherData as? [String: Any]
             {
+                if let dictionary = weatherData as? [String: Any]
+                {
+                    // check if there was an error with the zip code
+                    
+                    if let response = dictionary["response"] as? [String:Any]
+                    {
+                        if let error = response["error"] as? [String:Any]
+                        {
+                            if let description = error["description"] as? String
+                            {
+                                self.displayError(title: "Error", message: description, toSettings: true)
+                            }
+                        }
+                    }
+                }
+                
+                
                 if let currentConditions = dictionary["current_observation"] as? [String:Any]
                 {
                     // get current temperature and display it
                     
-                    let currentTempIntF = currentConditions["temp_f"] as? Int
-                    
-                    // print("Current Temp \(currentTempIntF!)°")
-                    
-                    self.currentTemp.text = String(format: "%d°", currentTempIntF!)
+                    if (UserDefaults.standard.value(forKey: "isEnglish") as! Bool)
+                    {
+                        let currentTempInt = currentConditions["temp_f"] as? Int
+                        
+                        self.currentTemp.text = String(format: "%d°", currentTempInt!)
+                        
+                        // set background color of currentconditionsview to reflect temp
+                        
+                        if (currentTempInt! < 60)
+                        {
+                            self.currentConditionsView.backgroundColor = UIColor(0x03A9F4)
+                        }
+                        else
+                        {
+                            self.currentConditionsView.backgroundColor = UIColor(0xFF9800)
+                        }
+                    }
+                    else
+                    {
+                        let currentTempInt = currentConditions["temp_c"] as? Int
+                        
+                        self.currentTemp.text = String(format: "%d°", currentTempInt!)
+                        
+                        // set background color of currentconditionsview to reflect temp
+                        
+                        if (currentTempInt! < 16)
+                        {
+                            self.currentConditionsView.backgroundColor = UIColor(0x03A9F4)
+                        }
+                        else
+                        {
+                            self.currentConditionsView.backgroundColor = UIColor(0xFF9800)
+                        }
+                    }
                     
                     // get current city and display it
                     
                     if let displayLocation = currentConditions["display_location"] as? [String:Any]
-                    {                        
+                    {
                         self.cityState.text = displayLocation["full"] as? String
                     }
                     
                     // get current weather data and display it
                     
                     self.currentCondition.text = currentConditions["weather"] as? String
-                    
-                    // set background color of currentconditionsview to reflect temp
-                    
-                    if (currentTempIntF! < 60)
-                    {
-                        self.currentConditionsView.backgroundColor = UIColor(0x03A9F4)
-                    }
-                    else
-                    {
-                        self.currentConditionsView.backgroundColor = UIColor(0xFF9800)
-                    }
                 }
+                
+                // update UI if all completion blocks have finished
+                
+                self.simpleCompletionCounter = self.simpleCompletionCounter + 1
+                
+                self.reloadDataUponDownloadCompletion()
             }
         }
         
@@ -120,27 +155,251 @@ class MainViewController: UIViewController {
         {
             weatherData in
             
-            self.activityIndicator.stopAnimating()
+            // check if there was an error with the zip code
             
             if let dictionary = weatherData as? [String: Any]
             {
+                if let response = dictionary["response"] as? [String:Any]
+                {
+                    if let error = response["error"] as? [String:Any]
+                    {
+                        if let description = error["description"] as? String
+                        {
+                            self.displayError(title: "Error", message: description, toSettings: true)
+                        }
+                    }
+                }
                 
-                self.hourlyForecastArray = dictionary["hourly_forecast"] as! [Any]
- 
-                print("number of items: \(self.hourlyForecastArray.count)")
+                if let hourlyForecastArraySafe = dictionary["hourly_forecast"] as? [Any]
+                {
+                    self.hourlyForecastArray = hourlyForecastArraySafe
+                }
                 
-                self.collectionView.reloadData()
+                // update UI if all completion blocks have finished
+                
+                self.simpleCompletionCounter = self.simpleCompletionCounter + 1
+                
+                self.reloadDataUponDownloadCompletion()
+                
+                // get unique hourly icons
+                
+                var fullHourlyArray = [String]()
+                
+                for hour in 0 ..< self.hourlyForecastArray.count
+                {
+                    if let dictionary = self.hourlyForecastArray[hour] as? [String:Any]
+                    {
+                        let icon = dictionary["icon"] as? String
+                        
+                        fullHourlyArray.append(icon!)
+                    }
+                }
+                
+                // get unique icon values
+                
+                self.uniqueIcons = Array(Set(fullHourlyArray))
+                
+                // get icons 
+                
+                self.getIcons()
             }
         }
         
     }
     
-    // MARK: - Navigation
-    
-    @IBAction func returnFromSettingsSegue(_: UIStoryboardSegue)
+    func getIcons()
     {
+        // get weather icons
+        // for the sake of the project, it looks like the specifications are calling for the download of these icons every time the application runs. If these Icons never change, I would prefer to simply save these icons in the assets for the application rather than have all of these network calls.
         
+        // get both solid and outlined weather icons for collection view
+        
+        for icon in 0 ..< self.uniqueIcons.count
+        {
+            getIconData(iconURL: self.uniqueIcons[icon].nrd_weatherIconURL(highlighted: true)!)
+            {
+                iconData in
+                
+                // full icon string
+                
+                let iconString = String(format: "%@-highlighted", self.uniqueIcons[icon])
+                
+                // add icon to icon dict
+                
+                self.iconImageDict[iconString] = UIImage(data: iconData as! Data)
+                
+                // update UI if all completion blocks have finished
+                
+                self.simpleCompletionCounter = self.simpleCompletionCounter + 1
+                
+                self.reloadDataUponDownloadCompletion()
+                
+            }
+            
+            getIconData(iconURL: self.uniqueIcons[icon].nrd_weatherIconURL()!)
+            {
+                iconData in
+                
+                self.iconImageDict[self.uniqueIcons[icon]] = UIImage(data: iconData as! Data)
+                
+                // update UI if all completion blocks have finished
+                
+                self.simpleCompletionCounter = self.simpleCompletionCounter + 1
+                
+                self.reloadDataUponDownloadCompletion()
+            }
+            
+        }
+
     }
+    
+    func reloadDataUponDownloadCompletion()
+    {
+        if(uniqueIcons.count > 0)
+        {
+            if(self.simpleCompletionCounter == (2 + (self.uniqueIcons.count * 2)))
+            {
+                self.collectionView.reloadData()
+                
+                self.activityIndicator.stopAnimating()
+            }
+        }
+    }
+    
+    func clearViews()
+    {
+        self.currentTemp.text = ""
+        self.cityState.text = ""
+        self.currentCondition.text = ""
+        
+        self.hourlyForecastArray.removeAll()
+        
+        collectionView.reloadData()
+    }
+    
+    // MARK: - Error Handling
+    
+    func displayError(title: String,message: String, toSettings: Bool)
+    {
+        // alert controller with completion action
+        
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        
+        let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) { (result : UIAlertAction) -> Void in
+            
+            if (toSettings == true)
+            {
+                self.performSegue(withIdentifier: "toSettingsView", sender: self)
+            }
+            else
+            {
+                // action called when modal view controller is dismissed
+                
+                self.simpleCompletionCounter = 0
+                
+                self.clearViews()
+                
+                self.initializeView()
+            }
+        }
+        alertController.addAction(okAction)
+        
+        self.present(alertController, animated: true, completion: nil)
+
+    }
+    
+    // MARK: - Network Calls
+
+    func getWeatherData(callType: String, completionHandler: @escaping (_ weatherData: Any?) -> ())
+    {
+        let url = HelperMethods.weatherURL(callType: callType,zipCode: (UserDefaults.standard.value(forKey: "zipCode") as! String))
+        
+        let session = URLSession.shared
+        
+        let task = session.dataTask(with: url)
+        {
+            data, response, error in
+            
+            var statusCode = 0
+            
+            if let httpResponse = response as? HTTPURLResponse
+            {
+                statusCode = httpResponse.statusCode
+            }
+            
+                if (statusCode == 200)
+                {
+                    let weatherData: Data = data!
+                    
+                    let json = try? JSONSerialization.jsonObject(with: weatherData, options: [])
+                    
+                    // dispatch completion handler on main queue for UI update
+                    DispatchQueue.main.async(execute: { () -> Void in
+                        completionHandler(json)
+
+                    })
+                    
+                }
+                else if (statusCode != 0)
+                {
+                    // error with http status code
+                    
+                    self.displayError(title: "Error", message: String(format: "Unable to establish network connetion. Error: %@\nMake sure you are connected to the internet.",statusCode), toSettings: false)
+                    
+                    
+                }
+                else
+                {
+                    // error with swift httpurl error message
+                    
+                    self.displayError(title: "Error", message: String(format: "Unable to establish network connetion. Error: %@\nMake sure you are connected to the internet.",(error?.localizedDescription)!), toSettings: false)
+                }
+            
+            }
+        
+            task.resume()
+    }
+    
+    func getIconData(iconURL: URL, completionHandler: @escaping (_ iconData: Any?) -> ())
+    {
+        let session = URLSession.shared
+        
+        let task = session.dataTask(with: iconURL)
+        {
+            data, response, error in
+            
+            let httpResponse = response as! HTTPURLResponse
+            let statusCode = httpResponse.statusCode
+            
+            if (statusCode == 200)
+            {
+                // dispatch completion handler on main queue for UI update
+                DispatchQueue.main.async(execute: { () -> Void in
+                    completionHandler(data)
+                    
+                })
+                
+            }
+            else if (statusCode != 0)
+            {
+                // error with http status code
+                
+                self.displayError(title: "Error", message: String(format: "Unable to establish network connetion. Error: %@\nMake sure you are connected to the internet.",statusCode), toSettings: false)
+                
+                
+            }
+            else
+            {
+                // error with swift httpurl error message
+                
+                self.displayError(title: "Error", message: String(format: "Unable to establish network connetion. Error: %@\nMake sure you are connected to the internet.",(error?.localizedDescription)!), toSettings: false)
+            }
+        }
+        
+        task.resume()
+    }
+    
+    // MARK: - Navigation
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -149,181 +408,21 @@ class MainViewController: UIViewController {
         
         // Set the popover presentation style delegate to always force a popover
     }
-    
-    // TODO: detect device orientation and change layout for lanscape vs portrait
-    
-    /*
-    func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator)
-    {
-        
-        coordinator.animate(alongsideTransition: { (UIViewControllerTransitionCoordinatorContext) -> Void in
-            
-            let orient = UIApplication.shared.statusBarOrientation
-            
-            switch orient {
-            case .portrait:
-                print("Portrait")
-                self.ApplyportraitConstraint()
-                break
-            // Do something
-            default:
-                print("LandScape")
-                // Do something else
-                self.applyLandScapeConstraint()
-                break
-            }
-        }, completion: { (UIViewControllerTransitionCoordinatorContext) -> Void in
-            print("rotation completed")
-        })
-        self.viewWillTransitionToSize(size: size, withTransitionCoordinator: coordinator)
-    }*/
-    /*
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        coordinator.animate(alongsideTransition: nil, completion: {
-            _ in
-            
-            let orient = UIApplication.shared.statusBarOrientation
-            
-            switch orient {
-            case .portrait:
-                print("Portrait")
-                self.ApplyportraitConstraint()
-                break
-            // Do something
-            default:
-                print("LandScape")
-                // Do something else
-                self.applyLandScapeConstraint()
-                break
-            }
-        })
- 
-    }*/
-    /*
-    func rotated()
-    {
-        if UIDeviceOrientationIsLandscape(UIDevice.current.orientation) {
-            print("Landscape")
-            self.applyLandScapeConstraint()
-        }
-        
-        if UIDeviceOrientationIsPortrait(UIDevice.current.orientation) {
-            print("Portrait")
-            self.ApplyportraitConstraint()
-        }
-        
-    }*/
 
-    func ApplyportraitConstraint()
+    @IBAction func returnedToMainViewController(segue:UIStoryboardSegue)
     {
+        // action called when modal view controller is dismissed
         
-        // try setting priorities instead of adding and removing constraints
-        if(self.portraitConstraintARCV == nil)
-        {
-            self.view.addConstraint(self.portraitConstraintARCV)
-            self.view.addConstraint(self.portraitConstraintAROV)
-            self.view.addConstraint(self.portraitConstraintBAOV)
-            self.view.addConstraint(self.portraitConstraintTSOV)
-            self.view.addConstraint(self.portraitConstraintLSCV)
-            self.view.addConstraint(self.portraitConstraintTPCV)
+        self.simpleCompletionCounter = 0
+        
+        self.clearViews()
+        
+        self.initializeView()
 
-        }
-        /*
-        self.portraitConstraintARCV.priority = 1000
-        self.portraitConstraintAROV.priority = 1000
-        self.portraitConstraintBAOV.priority = 1000
-        self.portraitConstraintTSOV.priority = 1000
-        self.portraitConstraintLSCV.priority = 1000
-        self.portraitConstraintTPCV.priority = 1000
-        */
-        if (self.landscapeConstraintWTOV != nil)
-        {
-            self.view.removeConstraint(self.landscapeConstraintWTOV)
-            self.view.removeConstraint(self.landscapeConstraintBLOV)
-            self.view.removeConstraint(self.landscapeConstraintLSCV)
-            self.view.removeConstraint(self.landscapeConstraintTPCV)
-        }
-        /*
-        self.landscapeConstraintWTOV.priority = 999
-        self.landscapeConstraintBLOV.priority = 999
-        self.landscapeConstraintLSCV.priority = 999
-        self.landscapeConstraintTPCV.priority = 999
-        */
     }
-    
-    func applyLandScapeConstraint()
-    {
-        if(self.portraitConstraintARCV != nil)
-        {
-            self.view.removeConstraint(self.portraitConstraintARCV)
-            self.view.removeConstraint(self.portraitConstraintAROV)
-            self.view.removeConstraint(self.portraitConstraintBAOV)
-            self.view.removeConstraint(self.portraitConstraintTSOV)
-            self.view.removeConstraint(self.portraitConstraintLSCV)
-            self.view.removeConstraint(self.portraitConstraintTPCV)
-        }
-        /*
-        self.portraitConstraintARCV.priority = 999
-        self.portraitConstraintAROV.priority = 999
-        self.portraitConstraintBAOV.priority = 999
-        self.portraitConstraintTSOV.priority = 999
-        self.portraitConstraintLSCV.priority = 999
-        self.portraitConstraintTPCV.priority = 999
-         */
-        if(self.landscapeConstraintWTOV == nil)
-        {
-            self.view.addConstraint(self.landscapeConstraintWTOV)
-            self.view.addConstraint(self.landscapeConstraintBLOV)
-            self.view.addConstraint(self.landscapeConstraintLSCV)
-            self.view.addConstraint(self.landscapeConstraintTPCV)
-        }
-        /*
-        self.landscapeConstraintWTOV.priority = 1000
-        self.landscapeConstraintBLOV.priority = 1000
-        self.landscapeConstraintLSCV.priority = 1000
-        self.landscapeConstraintTPCV.priority = 1000
-         */
-    }
-
-    
 }
 
-func getWeatherData(callType: String, completionHandler: @escaping (_ weatherData: Any?) -> ())
-{
-    let url = HelperMethods.weatherURL(callType: callType,zipCode: "55317")
-    
-    let session = URLSession.shared
-    
-    let task = session.dataTask(with: url)
-    {
-        data, response, error in
-        
-        let httpResponse = response as! HTTPURLResponse
-        let statusCode = httpResponse.statusCode
-        
-        print("status code \(statusCode)")
-            if (statusCode == 200)
-            {
-                let weatherData: Data = data!
-                
-                let json = try? JSONSerialization.jsonObject(with: weatherData, options: [])
-                
-                // dispatch completion handler on main queue for UI update
-                DispatchQueue.main.async(execute: { () -> Void in
-                    completionHandler(json)
 
-                })
-                
-            }
-            else
-            {
-                // handle error and display to user
-            }
-        }
-    
-        task.resume()
-}
 
 // MARK: - UICollectionViewDataSource
 extension MainViewController: UICollectionViewDataSource
@@ -353,13 +452,11 @@ extension MainViewController: UICollectionViewDataSource
             {
                 if let firstHourFCTDict = firstHourDict["FCTTIME"] as? [String:Any]
                 {
-                    print("hour of the day: \(firstHourFCTDict["hour"]!)")
-                    
                     let firstHourInt = firstHourFCTDict["hour"] as! String
                     
-                    hoursLeftOnDayOne = Int(firstHourInt)!
+                    hoursLeftOnDayOne = 24 - Int(firstHourInt)!
                     
-                    return (24 - hoursLeftOnDayOne)
+                    return (hoursLeftOnDayOne)
                 }
             }
             
@@ -382,30 +479,192 @@ extension MainViewController: UICollectionViewDataSource
         
         // get current cell number and access correct values in hourly forecast array
         
-        print((indexPath.section)*24 + indexPath.row + self.hoursLeftOnDayOne)
-        
         var cellNumber = Int()
         
         if (indexPath.section == 0)
         {
             cellNumber = indexPath.row
         }
-        else if (indexPath.section > 0)
+        else if (indexPath.section == 1)
         {
-            
+           cellNumber = indexPath.row + self.hoursLeftOnDayOne
+        }
+        else if (indexPath.section > 1)
+        {
+            cellNumber = indexPath.row + self.hoursLeftOnDayOne + ((indexPath.section - 1) * 24)
         }
         
-        if let currentHourDict = self.hourlyForecastArray[(indexPath.section)*24 + indexPath.row] as? [String:Any]
+        // cell icon
+        
+        var cellIconImageType = String()
+        
+        // set labels of cell
+        
+        if let currentHourDict = self.hourlyForecastArray[cellNumber] as? [String:Any]
         {
+            // set hour label
             
-        }
+            if let currentHourDictFCT = currentHourDict["FCTTIME"] as? [String:Any]
+            {
+                cell.timeLabel.text = currentHourDictFCT["civil"] as? String
+                
+            }
+            
+            // set temp label
 
+            if let tempDict = currentHourDict["temp"] as? [String:Any]
+            {
+                if ((UserDefaults.standard.value(forKey: "isEnglish") as! Bool))
+                {
+                    cell.tempLabel.text = String(format: "%@°", (tempDict["english"] as? String)!)
+                }
+                else
+                {
+                    cell.tempLabel.text = String(format: "%@°", (tempDict["metric"] as? String)!)
+                }
+                
+                
+            }
+            
+            cellIconImageType = (currentHourDict["icon"] as? String)!
+        }
+        
+        // for getting high and low of the day
+        
+        let firstHourOfCurrentDay = (cellNumber - indexPath.row)
+        
+        let lastHourOfCurrentDay = firstHourOfCurrentDay + hoursLeftOnDayOne
+        
+        // array for storing and comparing temps of the current day
+        
+        var tempsArray = [Int]()
+        
+        for dayNumber in firstHourOfCurrentDay...(lastHourOfCurrentDay - 1)
+        {
+            if let currentHourDict = self.hourlyForecastArray[dayNumber] as? [String:Any]
+            {
+                // set hour label
+                
+                if let currentTempDict = currentHourDict["temp"] as? [String:Any]
+                {
+                    let temp = currentTempDict["english"] as? String
+                    
+                    tempsArray.append(Int(temp!)!)
+                }
+            }
+        }
+        
+        // first occurance of high and low
+        
+        let highTemp = tempsArray.max()!
+        let lowTemp = tempsArray.min()!
+        
+        var firstHigh = Int()
+        var firstLow = Int()
+        
+        // for high temp
+        
+        for i in 0 ..< tempsArray.count
+        {
+            if(tempsArray[i] == highTemp)
+            {
+                firstHigh = i + firstHourOfCurrentDay
+                
+                break
+            }
+        }
+        
+        // for low temp
+        
+        for i in 0 ..< tempsArray.count
+        {
+            if(tempsArray[i] == lowTemp)
+            {
+                firstLow = i + firstHourOfCurrentDay
+                
+                break
+            }
+        }
+        
+        let outlineIcon = self.iconImageDict[cellIconImageType]
+        let solidIcon = self.iconImageDict[String(format: "%@-highlighted", cellIconImageType)]
+        
+        // set icon for cell imageview
+        
+        if (firstLow == firstHigh)
+        {
+            cell.imageView.image = outlineIcon?.withRenderingMode(.alwaysTemplate)
+            cell.imageView.tintColor = UIColor.black
+        }
+        else if (cellNumber == firstHigh)
+        {
+            cell.imageView.image = solidIcon?.withRenderingMode(.alwaysTemplate)
+            cell.imageView.tintColor = UIColor(0xFF9800)
+        }
+        else if (cellNumber == firstLow)
+        {
+            cell.imageView.image = solidIcon?.withRenderingMode(.alwaysTemplate)
+            cell.imageView.tintColor = UIColor(0x03A9F4)
+        }
+        else
+        {
+            cell.imageView.image = outlineIcon?.withRenderingMode(.alwaysTemplate)
+            cell.imageView.tintColor = UIColor.black
+        }
         
         return cell
     }
+        
     
-    /*
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView
+    {
+        // switch if there later are other types of reusable views
+        switch kind
+        {
+        
+        case UICollectionElementKindSectionHeader:
+            
+            let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
+                                                                             withReuseIdentifier: "HeaderView",
+                                                                             for: indexPath) as! HeaderCollectionReusableView
+            // check if there is data to load in collection view, if not, set day label to Loading...
+            if (self.hourlyForecastArray.count == 0)
+            {
+                headerView.dayLabel.text = "Loading..."
+            }
+            else
+            {
+                if (indexPath.section == 0)
+                {
+                    headerView.dayLabel.text = "Today"
+
+                }
+                else if (indexPath.section == 1)
+                {
+                    headerView.dayLabel.text = "Tomorrow"
+                }
+                else
+                {
+                    headerView.dayLabel.text = "Today"
+                    
+                    // going into hourly forcast to grab
+                    
+                    if let currentHourDict = self.hourlyForecastArray[(self.hoursLeftOnDayOne + ((indexPath.section - 1) * 24))] as? [String:Any]
+                    {
+                        if let currentHourDictFCT = currentHourDict["FCTTIME"] as? [String:Any]
+                        {
+                            headerView.dayLabel.text = currentHourDictFCT["weekday_name"] as? String
+                        }
+
+                    }
+                }
+                
+            }
+            return headerView
+        default:
+            
+            assert(false, "unknown element")
+        }
     }
-     */
+    
 }

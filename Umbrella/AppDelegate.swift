@@ -15,6 +15,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        
+        // for setting status bar color to light
+        
+        UIApplication.shared.statusBarStyle = .lightContent
+        
+        // setup first time setting to fahrenheit
+        
+        if (UserDefaults.standard.value(forKey: "firstTime") == nil)
+        {
+            UserDefaults.standard.setValue(true, forKey: "isEnglish")
+            
+            UserDefaults.standard.setValue(false, forKey: "firstTime")
+            
+            UserDefaults.standard.setValue("90210", forKey: "zipCode")
+        }
+        
         // Override point for customization after application launch.
         
         // fatalError("Look at me first")
@@ -32,7 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Setup the request
         // var weatherRequest = WeatherRequest(APIKey: "324f2ac862fc9fea")
         
-
+    
         
         // Here's your URL. Marshall this to the internet however you please.
         let url = weatherRequest.URL
@@ -69,7 +85,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    func applicationDidBecomeActive(_ application: UIApplication) {
+    func applicationDidBecomeActive(_ application: UIApplication)
+    {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
 

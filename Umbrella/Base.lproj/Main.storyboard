@@ -7,6 +7,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -28,15 +29,15 @@
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="hwj-bF-FWv" secondAttribute="height" multiplier="375:479" id="PBU-DW-lhL"/>
                                 </constraints>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="npG-sO-eSE">
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="20" minimumInteritemSpacing="10" id="npG-sO-eSE">
                                     <size key="itemSize" width="62" height="62"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="headerReferenceSize" width="50" height="50"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                    <inset key="sectionInset" minX="20" minY="20" maxX="20" maxY="20"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="hourlyCell" id="lZX-Dn-pmD" customClass="HourlyCollectionViewCell" customModule="Umbrella" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="62" height="62"/>
+                                        <rect key="frame" x="20" y="70" width="62" height="62"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="62" height="62"/>
@@ -78,6 +79,45 @@
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
+                                <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="HeaderView" id="aKe-g8-uQe" customClass="HeaderCollectionReusableView" customModule="Umbrella" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Day" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RL8-0J-AGj">
+                                            <rect key="frame" x="8" y="15" width="130" height="21"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JeK-Oc-dLD">
+                                            <rect key="frame" x="0.0" y="49" width="375" height="1"/>
+                                            <color key="backgroundColor" red="0.53333333333333333" green="0.53333333333333333" blue="0.53333333333333333" alpha="1" colorSpace="calibratedRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="1" id="GnE-Vd-33h"/>
+                                            </constraints>
+                                        </view>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xFg-e5-lWR">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="2"/>
+                                            <color key="backgroundColor" red="0.53333333333333333" green="0.53333333333333333" blue="0.53333333333333333" alpha="1" colorSpace="calibratedRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="2" id="4mM-h7-9wa"/>
+                                            </constraints>
+                                        </view>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="JeK-Oc-dLD" secondAttribute="trailing" id="5KE-9z-CpP"/>
+                                        <constraint firstAttribute="trailing" secondItem="xFg-e5-lWR" secondAttribute="trailing" id="5bP-aD-ONO"/>
+                                        <constraint firstAttribute="bottom" secondItem="JeK-Oc-dLD" secondAttribute="bottom" id="BOg-o9-P75"/>
+                                        <constraint firstItem="JeK-Oc-dLD" firstAttribute="leading" secondItem="aKe-g8-uQe" secondAttribute="leading" id="Ojv-sT-cew"/>
+                                        <constraint firstItem="xFg-e5-lWR" firstAttribute="leading" secondItem="aKe-g8-uQe" secondAttribute="leading" id="P7y-iI-sVr"/>
+                                        <constraint firstItem="RL8-0J-AGj" firstAttribute="leading" secondItem="aKe-g8-uQe" secondAttribute="leadingMargin" constant="20" id="aBt-Ja-UjL"/>
+                                        <constraint firstItem="RL8-0J-AGj" firstAttribute="centerY" secondItem="aKe-g8-uQe" secondAttribute="centerY" id="vFv-1n-Lnv"/>
+                                        <constraint firstItem="xFg-e5-lWR" firstAttribute="top" secondItem="aKe-g8-uQe" secondAttribute="top" id="wkr-lY-qai"/>
+                                    </constraints>
+                                    <connections>
+                                        <outlet property="dayLabel" destination="RL8-0J-AGj" id="viN-bV-RZ1"/>
+                                    </connections>
+                                </collectionReusableView>
                                 <connections>
                                     <outlet property="dataSource" destination="BYZ-38-t0r" id="kSw-0e-Ww5"/>
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="oBP-OB-sOZ"/>
@@ -103,7 +143,7 @@
                                                 </constraints>
                                                 <state key="normal" image="settingsCog"/>
                                                 <connections>
-                                                    <segue destination="YI1-vi-hdI" kind="show" id="wwa-Co-UVG"/>
+                                                    <segue destination="YI1-vi-hdI" kind="presentation" identifier="toSettingsView" modalPresentationStyle="overCurrentContext" id="wwa-Co-UVG"/>
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RgX-EH-Ga6">
@@ -168,16 +208,6 @@
                         <outlet property="currentCondition" destination="aAa-nr-gUD" id="kNm-8o-THe"/>
                         <outlet property="currentConditionsView" destination="5Lt-3K-VdP" id="VYZ-cY-wAQ"/>
                         <outlet property="currentTemp" destination="RgX-EH-Ga6" id="xHw-JZ-k15"/>
-                        <outlet property="landscapeConstraintBLOV" destination="r3T-A3-lfw" id="en5-v2-qkL"/>
-                        <outlet property="landscapeConstraintLSCV" destination="XAw-Ve-mFI" id="5Mg-7G-1HI"/>
-                        <outlet property="landscapeConstraintTPCV" destination="LWc-Eh-xH8" id="ZXs-DG-jub"/>
-                        <outlet property="landscapeConstraintWTOV" destination="vAi-OT-Kss" id="owh-rd-oNq"/>
-                        <outlet property="portraitConstraintARCV" destination="Rg4-L2-HxK" id="cdM-KD-UJf"/>
-                        <outlet property="portraitConstraintAROV" destination="PBU-DW-lhL" id="2hy-fQ-rs7"/>
-                        <outlet property="portraitConstraintBAOV" destination="OgN-Qi-alY" id="WRq-Q2-UZr"/>
-                        <outlet property="portraitConstraintLSCV" destination="B3V-fV-Bjl" id="yzP-Ns-voe"/>
-                        <outlet property="portraitConstraintTPCV" destination="r01-qt-yIE" id="z0H-H7-jSf"/>
-                        <outlet property="portraitConstraintTSOV" destination="gCf-nI-sT9" id="qQQ-VS-IqK"/>
                         <outlet property="settingsButton" destination="l8h-XW-e3E" id="bOo-cc-On2"/>
                     </connections>
                 </viewController>
@@ -193,26 +223,79 @@
                         <viewControllerLayoutGuide type="top" id="Z0j-2K-kTr"/>
                         <viewControllerLayoutGuide type="bottom" id="Wyu-8R-YGN"/>
                     </layoutGuides>
-                    <view key="view" alpha="0.40000000000000002" contentMode="scaleToFill" id="ZNF-zW-a6M">
+                    <view key="view" contentMode="scaleToFill" id="ZNF-zW-a6M">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nk9-rc-H9U">
-                                <rect key="frame" x="20" y="28" width="282" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="RETURN FROM WHENCE I CAME"/>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="dDN-Cs-S37">
+                                <rect key="frame" x="75" y="120" width="225" height="29"/>
+                                <segments>
+                                    <segment title="Fahrenheit"/>
+                                    <segment title="Celcius"/>
+                                </segments>
                                 <connections>
-                                    <segue destination="5HP-Li-T4U" kind="unwind" unwindAction="returnFromSettingsSegue:" id="Ts3-je-bNi"/>
+                                    <action selector="tempTypeSwitch:" destination="YI1-vi-hdI" eventType="valueChanged" id="nK4-nC-TaW"/>
+                                </connections>
+                            </segmentedControl>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nk9-rc-H9U">
+                                <rect key="frame" x="46" y="192" width="282" height="30"/>
+                                <state key="normal" title="Get the weather"/>
+                                <connections>
+                                    <action selector="getWeatherButtonPushed:" destination="YI1-vi-hdI" eventType="touchUpInside" id="yPa-LV-A5d"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="90210" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Llo-sx-RNE">
+                                <rect key="frame" x="29" y="49" width="317" height="30"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Jr-ph-MFl">
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <segue destination="5HP-Li-T4U" kind="unwind" identifier="returnToMainViewController" unwindAction="returnedToMainViewControllerWithSegue:" id="bEQ-DM-dcP"/>
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.53333333333333333" green="0.53333333333333333" blue="0.53333333333333333" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="Llo-sx-RNE" firstAttribute="top" secondItem="Z0j-2K-kTr" secondAttribute="bottom" constant="45" id="1WM-Ns-zHs"/>
+                            <constraint firstItem="dDN-Cs-S37" firstAttribute="centerX" secondItem="ZNF-zW-a6M" secondAttribute="centerX" id="3Uh-4b-zLf"/>
+                            <constraint firstItem="nk9-rc-H9U" firstAttribute="top" secondItem="dDN-Cs-S37" secondAttribute="bottom" constant="25" id="67l-DK-1Of"/>
+                            <constraint firstItem="Llo-sx-RNE" firstAttribute="leading" secondItem="ZNF-zW-a6M" secondAttribute="leadingMargin" constant="15" id="9N3-fb-D2X"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Llo-sx-RNE" secondAttribute="trailing" constant="15" id="geV-2C-JOd"/>
+                            <constraint firstItem="nk9-rc-H9U" firstAttribute="centerX" secondItem="ZNF-zW-a6M" secondAttribute="centerX" id="htw-cr-hBT"/>
+                            <constraint firstItem="dDN-Cs-S37" firstAttribute="top" secondItem="Llo-sx-RNE" secondAttribute="bottom" constant="41" id="uKK-VD-f8e"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="getWeatherButton" destination="nk9-rc-H9U" id="vF2-AG-oUb"/>
+                        <outlet property="segmentedControl" destination="dDN-Cs-S37" id="A2v-6f-Zva"/>
+                        <outlet property="textField" destination="Llo-sx-RNE" id="BIt-Z6-e5W"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9pf-OA-xHL" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="5HP-Li-T4U" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="932" y="597"/>
+            <point key="canvasLocation" x="932" y="596.85157421289364"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="7wb-kO-hXn">
+            <objects>
+                <viewController id="fXI-gI-Hgp" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="qDB-i4-tko"/>
+                        <viewControllerLayoutGuide type="bottom" id="xQz-rN-SXp"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="OMZ-fx-nu2">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hve-CF-2pH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
         </scene>
     </scenes>
     <resources>
