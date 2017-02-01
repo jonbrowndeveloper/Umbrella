@@ -11,5 +11,4 @@ import UIKit
 class HeaderCollectionReusableView: UICollectionReusableView
 {
     @IBOutlet weak var dayLabel: UILabel!
-        
 }

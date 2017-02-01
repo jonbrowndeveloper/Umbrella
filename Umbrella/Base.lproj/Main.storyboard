@@ -29,7 +29,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="180"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eJH-6g-ZPJ">
-                                                <rect key="frame" x="10" y="30" width="0.0" height="0.0"/>
+                                                <rect key="frame" x="10" y="30" width="0.0" height="100"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -266,18 +266,18 @@
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="uD0-Ov-cmg"/>
-                                <exclude reference="Knc-7z-SiY"/>
                                 <exclude reference="TAn-RX-FY6"/>
                                 <exclude reference="WE5-r6-qe1"/>
                                 <exclude reference="YhT-Mi-JhH"/>
                                 <exclude reference="teh-Vq-m0a"/>
+                                <exclude reference="Knc-7z-SiY"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=compact">
                             <mask key="constraints">
-                                <include reference="Knc-7z-SiY"/>
                                 <include reference="YhT-Mi-JhH"/>
                                 <include reference="teh-Vq-m0a"/>
+                                <include reference="Knc-7z-SiY"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular">
@@ -327,7 +327,7 @@
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <segmentedControl opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="dDN-Cs-S37">
-                                                        <rect key="frame" x="75" y="100" width="225" height="29"/>
+                                                        <rect key="frame" x="75" y="116" width="225" height="29"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="225" id="kpK-sk-5qf"/>
                                                         </constraints>
@@ -340,7 +340,7 @@
                                                         </connections>
                                                     </segmentedControl>
                                                     <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nk9-rc-H9U">
-                                                        <rect key="frame" x="46" y="110" width="282" height="30"/>
+                                                        <rect key="frame" x="46" y="177" width="282" height="30"/>
                                                         <state key="normal" title="Get the weather"/>
                                                         <connections>
                                                             <action selector="getWeatherButtonPushed:" destination="YI1-vi-hdI" eventType="touchUpInside" id="yPa-LV-A5d"/>
@@ -369,8 +369,8 @@
                                     <segue destination="5HP-Li-T4U" kind="unwind" identifier="returnToMainViewController" unwindAction="returnedToMainViewControllerWithSegue:" id="bEQ-DM-dcP"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="90210" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Llo-sx-RNE">
-                                <rect key="frame" x="29" y="318" width="317" height="30"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="90210" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Llo-sx-RNE">
+                                <rect key="frame" x="31" y="65" width="313" height="30"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -379,15 +379,15 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="nk9-rc-H9U" firstAttribute="top" secondItem="Z0j-2K-kTr" secondAttribute="bottom" constant="154" id="7cQ-pK-FBy"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="Llo-sx-RNE" secondAttribute="trailing" constant="15" id="BQL-NA-n4E"/>
                             <constraint firstItem="HTo-mw-i32" firstAttribute="top" secondItem="ZNF-zW-a6M" secondAttribute="top" id="F8n-hR-b94"/>
-                            <constraint firstItem="Llo-sx-RNE" firstAttribute="leading" secondItem="ZNF-zW-a6M" secondAttribute="leadingMargin" constant="15" id="IJr-0O-YT0"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Llo-sx-RNE" secondAttribute="trailing" constant="15" id="GvV-Rb-9Yi"/>
                             <constraint firstAttribute="trailing" secondItem="HTo-mw-i32" secondAttribute="trailing" id="WjS-Au-rp2"/>
                             <constraint firstItem="dDN-Cs-S37" firstAttribute="top" secondItem="Z0j-2K-kTr" secondAttribute="bottom" constant="100" id="Xkp-nH-6Qy"/>
                             <constraint firstItem="nk9-rc-H9U" firstAttribute="centerX" secondItem="ZNF-zW-a6M" secondAttribute="centerX" id="XqB-Xo-G7G"/>
                             <constraint firstItem="HTo-mw-i32" firstAttribute="leading" secondItem="ZNF-zW-a6M" secondAttribute="leading" id="aeg-Wf-ueO"/>
+                            <constraint firstItem="Llo-sx-RNE" firstAttribute="top" secondItem="Z0j-2K-kTr" secondAttribute="bottom" constant="45" id="cNW-In-jAt"/>
+                            <constraint firstItem="Llo-sx-RNE" firstAttribute="leading" secondItem="ZNF-zW-a6M" secondAttribute="leadingMargin" constant="15" id="fIH-fc-TRD"/>
                             <constraint firstItem="Wyu-8R-YGN" firstAttribute="top" secondItem="HTo-mw-i32" secondAttribute="bottom" id="gWo-ET-Q1s"/>
-                            <constraint firstItem="Llo-sx-RNE" firstAttribute="top" secondItem="Z0j-2K-kTr" secondAttribute="bottom" constant="45" id="gq6-qY-fOd"/>
                             <constraint firstItem="dDN-Cs-S37" firstAttribute="centerX" secondItem="ZNF-zW-a6M" secondAttribute="centerX" id="y6j-qf-2fr"/>
                         </constraints>
                     </view>
@@ -400,7 +400,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9pf-OA-xHL" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="5HP-Li-T4U" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="932" y="596.85157421289364"/>
+            <point key="canvasLocation" x="921" y="475"/>
         </scene>
     </scenes>
     <resources>
